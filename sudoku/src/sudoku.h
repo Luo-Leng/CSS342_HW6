@@ -55,7 +55,31 @@ public:
     }
 
     bool solve() {
-        // homework
-        return false;   // placeholder
+        int row, col;
+
+        if (!FindUnassignedLocation(grid, row, col))
+            return true;
+
+        for (int num = 1; num <= 9; num++)
+        {
+            if (isSafe(grid, row, col, num))
+            {
+                grid[row][col] = num;
+                if (SolveSudoku(grid))
+                    return true;
+                grid[row][col] = UNASSIGNED;
+            }
+        }
+        return false;
+    }
+    bool helper(int grid[9,9],int&row, int& col){
+        for(row = 0; row< 9; row++){
+            for(col = 0; col <9; col++){
+                if(grid[row, col]== 0){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 };
