@@ -123,16 +123,16 @@ public:
     }
 
     bool contain(KeyType const &key) override {
-        // homework
+
         return false;
     }
 
     void traverse() override {
-        // not implemented
+
     }
 
     bool remove(KeyType const &key) override {
-        // homework
+
         return false;
     }
 };
