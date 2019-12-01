@@ -123,7 +123,20 @@ public:
     }
 
     bool contain(KeyType const &key) override {
+        int hashedKey = hashFunc(key);
+        if (count==0){
+            return false;
+        }
 
+        Entry<KeyType, ValueType> *ptr = entries[hashedKey];
+        Entry<KeyType, ValueType> *pNewNode = nullptr;
+        while (ptr != nullptr) {
+            if (ptr->key == key) {
+                return true;
+            }else{
+               ptr=ptr->next;
+            }
+        }
         return false;
     }
 
@@ -132,6 +145,7 @@ public:
     }
 
     bool remove(KeyType const &key) override {
+        int hashedKey = hashFunc(key);
 
         return false;
     }
