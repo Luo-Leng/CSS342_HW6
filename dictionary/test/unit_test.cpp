@@ -71,8 +71,32 @@ TEST(dict, array_dict_add_get) {
 }
 
 TEST(dict, contains) {
-    // homework
-    ASSERT_TRUE(false); // placeholder
+    ArrayDictionary<int, int> hashTable;
+    ASSERT_FALSE(hashTable.contain(-1));
+    ASSERT_FALSE(hashTable.contain(0));
+    ASSERT_FALSE(hashTable.contain(1));
+
+    ASSERT_TRUE(hashTable.add(0, 103));
+    ASSERT_TRUE(hashTable.contain(0));
+    ASSERT_FALSE(hashTable.contain(2));
+    ASSERT_TRUE(hashTable.add(1, 105));
+    ASSERT_TRUE(hashTable.contain(0));
+    ASSERT_TRUE(hashTable.contain(1));
+    ASSERT_FALSE(hashTable.contain(2));
+    ASSERT_FALSE(hashTable.contain(3));
+
+    ASSERT_FALSE(hashTable.contain(3));
+    ASSERT_TRUE(hashTable.add(2,206));
+    ASSERT_TRUE(hashTable.contain(1));
+
+    ASSERT_TRUE(hashTable.add(4,407));
+    ASSERT_TRUE(hashTable.contain(1));
+    ASSERT_TRUE(hashTable.contain(4));
+    ASSERT_FALSE(hashTable.contain(7));
+    ASSERT_FALSE(hashTable.contain(8));
+#ifdef PRINT
+hashTable.print();
+#endif
 }
 
 TEST(dict, remove) {
