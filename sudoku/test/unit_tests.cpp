@@ -1,6 +1,14 @@
 #include "gtest/gtest.h"
 #include "sudoku.h"
 
+
+void setTestAnswer(int answer[][9]) {
+    for (int i=0; i<9; i++) {
+        for (int j = 0; j < 9; j++) {
+            answer[i][j] = 9 * i + j;
+        }
+    }
+}
 TEST(sudoku, constructor) {
     int answer[9][9];
     for (int i=0; i<9; i++) {
@@ -100,4 +108,29 @@ TEST(sudoku, case3) {
     Sudoku sudoku(grid);
     sudoku.solve();
     ASSERT_TRUE(sudoku==answer);
+}
+TEST(sudoku, case4) {
+int grid[9][9] = {{6, 9, 0, 0, 0, 0, 0, 0, 7},
+                  {0, 5, 7, 0, 9, 6, 8, 0, 1},
+                  {0, 4, 8, 0, 3, 0, 0, 6, 9},
+                  {0, 0, 1, 0, 5, 0, 0, 0, 8},
+                  {0, 0, 0, 0, 4, 0, 0, 0, 0},
+                  {7, 0, 0, 0, 6, 0, 3, 0, 0},
+                  {8, 3, 0, 0, 7, 0, 5, 1, 0},
+                  {4, 0, 6, 5, 1, 0, 9, 8, 0},
+                  {5, 0, 0, 0, 0, 0, 0, 2, 4}};
+
+int answer[9][9] = {{6, 9, 3, 1, 2, 8, 4, 5, 7},
+                    {2, 5, 7, 4, 9, 6, 8, 3, 1},
+                    {1, 4, 8, 7, 3, 5, 2, 6, 9},
+                    {9, 2, 1, 3, 5, 7, 6, 4, 8},
+                    {3, 6, 5, 8, 4, 9, 1, 7, 2},
+                    {7, 8, 4, 2, 6, 1, 3, 9, 5},
+                    {8, 3, 2, 9, 7, 4, 5, 1, 6},
+                    {4, 7, 6, 5, 1, 2, 9, 8, 3},
+                    {5, 1, 9, 6, 8, 3, 7, 2, 4}};
+
+Sudoku sudoku(grid);
+sudoku.solve();
+ASSERT_TRUE(sudoku==answer);
 }
