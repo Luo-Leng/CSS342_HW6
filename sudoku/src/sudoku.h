@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-
+using namespace std;
 class Sudoku {
 private:
     int grid[9][9]{};
@@ -12,7 +12,7 @@ public:
 
     bool operator ==(const int (*otherGrid)[9]) {
         for (int i=0; i<9*9; i++) {
-            if (grid[i%3][i/3] != otherGrid[i%3][i/3]) {
+            if (grid[i%9][i/9] != otherGrid[i%9][i/9]) {
                 return false;
             }
         }
@@ -21,12 +21,16 @@ public:
 
     bool operator ==(const Sudoku & other) {
         for (int i=0; i<9*9; i++) {
-            if (grid[i%3][i/3] != other.grid[i%3][i/3]) {
+#ifdef PRINT
+            printf("comparing grid(%d, %d)\n", i%9, i/9);
+#endif
+            if (grid[i%9][i/9] != other.grid[i%9][i/9]) {
                 return false;
             }
         }
         return true;
     }
+
 
     int get(int i, int j) {
         if (i >= 0 && i < 9 && j >= 0 && j < 9) {
@@ -54,32 +58,59 @@ public:
         }
     }
 
-    bool solve() {
-        int row, col;
-
-        if (!FindUnassignedLocation(grid, row, col))
-            return true;
-
-        for (int num = 1; num <= 9; num++)
-        {
-            if (isSafe(grid, row, col, num))
-            {
-                grid[row][col] = num;
-                if (SolveSudoku(grid))
-                    return true;
-                grid[row][col] = UNASSIGNED;
+    bool checkRows(int row, int num){
+        for(int i=0;i<9;i++){
+            if(grid[row][i]==num ){
+                return true;
             }
         }
         return false;
     }
-    bool helper(int grid[9,9],int&row, int& col){
-        for(row = 0; row< 9; row++){
-            for(col = 0; col <9; col++){
-                if(grid[row, col]== 0){
+
+    bool checkCol(int col, int num){
+         for(int i=0;i<9;i++){
+            if(grid[i][col]==num ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool checkBox(int row, int col, int num) {
+        for(int i = 0 ; i< 3 ; i++){
+            for(int j = 0; j < 3 ; j++){
+                if(grid[i+row][j+col]==num ){
                     return true;
                 }
             }
         }
         return false;
     }
+    //https://codepumpkin.com/sudoku-solver-using-backtracking/
+    bool checkRules( int row, int col, int num) {
+        return !(checkRows(row,num)||checkCol(col,num)||checkBox(row-row%3, col-col%3, num));
+    }
+
+    bool solve() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (grid[row][col] == 0) {
+                    for (int num = 1; num <= 9; num++) {
+                        if (checkRules(row, col, num)) {
+                            grid[row][col] = num;
+                            if (solve()) {
+                                return true;
+                            } else {
+                                grid[row][col] = 0;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 };
