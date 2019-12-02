@@ -146,7 +146,16 @@ public:
 
     bool remove(KeyType const &key) override {
         int hashedKey = hashFunc(key);
-
-        return false;
+        Entry<KeyType, ValueType> *ptr = entries[hashedKey];
+        Entry<KeyType, ValueType> *pNewNode = nullptr;
+        if(!contain(key)){
+            return false;
+        }
+        count --;
+        while(ptr != nullptr){
+            ptr=ptr->next;
+            delete pNewNode;
+        }
+        return true;
     }
 };
