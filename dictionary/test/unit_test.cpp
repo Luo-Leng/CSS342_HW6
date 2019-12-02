@@ -71,35 +71,74 @@ TEST(dict, array_dict_add_get) {
 }
 
 TEST(dict, contains) {
-    ArrayDictionary<int, int> hashTable;
-    ASSERT_FALSE(hashTable.contain(-1));
-    ASSERT_FALSE(hashTable.contain(0));
-    ASSERT_FALSE(hashTable.contain(1));
+    ArrayDictionary<int, int> hashTable1;
+    ASSERT_FALSE(hashTable1.contain(-1));
+    ASSERT_FALSE(hashTable1.contain(0));
+    ASSERT_FALSE(hashTable1.contain(1));
 
-    ASSERT_TRUE(hashTable.add(0, 103));
-    ASSERT_TRUE(hashTable.contain(0));
-    ASSERT_FALSE(hashTable.contain(2));
-    ASSERT_TRUE(hashTable.add(1, 105));
-    ASSERT_TRUE(hashTable.contain(0));
-    ASSERT_TRUE(hashTable.contain(1));
-    ASSERT_FALSE(hashTable.contain(2));
-    ASSERT_FALSE(hashTable.contain(3));
+    ArrayDictionary<int, int> hashTable2(1);
+    ASSERT_TRUE(hashTable2.add(0, 103));
+    ASSERT_TRUE(hashTable2.contain(0));
+    ASSERT_FALSE(hashTable2.contain(2));
 
-    ASSERT_FALSE(hashTable.contain(3));
-    ASSERT_TRUE(hashTable.add(2,206));
-    ASSERT_TRUE(hashTable.contain(1));
+    ArrayDictionary<int, int> hashTable3(2);
+    ASSERT_TRUE(hashTable3.add(0, 103));
+    ASSERT_TRUE(hashTable3.add(1, 105));
+    ASSERT_TRUE(hashTable3.contain(0));
+    ASSERT_TRUE(hashTable3.contain(1));
+    ASSERT_FALSE(hashTable3.contain(2));
+    ASSERT_FALSE(hashTable3.contain(3));
 
-    ASSERT_TRUE(hashTable.add(4,407));
-    ASSERT_TRUE(hashTable.contain(1));
-    ASSERT_TRUE(hashTable.contain(4));
-    ASSERT_FALSE(hashTable.contain(7));
-    ASSERT_FALSE(hashTable.contain(8));
-#ifdef PRINT
-hashTable.print();
-#endif
-}
+    ArrayDictionary<int, int> hashTable4(3);
+    ASSERT_TRUE(hashTable4.add(0, 103));
+    ASSERT_TRUE(hashTable4.add(1, 105));
+    ASSERT_FALSE(hashTable4.contain(3));
+    ASSERT_TRUE(hashTable4.add(2, 206));
+    ASSERT_TRUE(hashTable4.contain(1));
+
+    ArrayDictionary<int, int> hashTable5(3);
+    ASSERT_TRUE(hashTable5.add(0, 103));
+    ASSERT_TRUE(hashTable5.add(1, 105));
+    ASSERT_TRUE(hashTable5.add(2, 206));
+    ASSERT_TRUE(hashTable5.add(4, 407));
+    ASSERT_TRUE(hashTable5.contain(1));
+    ASSERT_TRUE(hashTable5.contain(4));
+    ASSERT_FALSE(hashTable5.contain(7));
+    ASSERT_FALSE(hashTable5.contain(8));
+
+    }
 
 TEST(dict, remove) {
-    // homework
-    ASSERT_TRUE(false); // placeholder
+    //empty
+    ArrayDictionary<int, int> hashTable;
+    ASSERT_FALSE(hashTable.remove(1));
+
+    //key exists in a dictionary that has no collision
+    ArrayDictionary<int, int> hashTable3(2);
+    ASSERT_TRUE(hashTable3.add(0, 103));
+    ASSERT_TRUE(hashTable3.add(1, 105));
+    ASSERT_TRUE(hashTable3.remove(0));
+    ASSERT_TRUE(hashTable3.remove(1));
+
+    //key does not exists in a dictionary that has no collision
+    ArrayDictionary<int, int> hashTable4(2);
+    ASSERT_TRUE(hashTable3.add(0, 103));
+    ASSERT_FALSE(hashTable3.remove(1));
+
+    //key exists in a dictionary that has collision, key is in the collision.
+    ArrayDictionary<int, int> hashTable5(3);
+    ASSERT_TRUE(hashTable5.add(0, 103));
+    ASSERT_TRUE(hashTable5.add(1, 105));
+    ASSERT_TRUE(hashTable5.add(2, 206));
+    ASSERT_TRUE(hashTable5.add(4, 407));
+    ASSERT_TRUE(hashTable5.remove(4));
+
+    //key does not exists in a dictionary that has collision
+    ArrayDictionary<int, int> hashTable6(3);
+    ASSERT_TRUE(hashTable6.add(0, 103));
+    ASSERT_TRUE(hashTable6.add(1, 105));
+    ASSERT_TRUE(hashTable6.add(2, 206));
+    ASSERT_TRUE(hashTable6.add(4, 407));
+    ASSERT_FALSE(hashTable6.remove(7));
 }
+
